@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
 import DoneIcon from '@material-ui/icons/Done';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
   root: {
@@ -25,11 +26,24 @@ function handleClick() {
   alert('You clicked the Chip.'); // eslint-disable-line no-alert
 }
 
+function SimpleChip(githubData, style, index) {
+  const name = githubData;
+  return <Chip label={name} className={style} key={index} />;
+}
+
 function Chips(props) {
   const { classes } = props;
+  console.log(props);
+
   return (
     <div className={classes.root}>
-      <Chip label="Basic Chip" className={classes.chip} />
+      {!props.github
+        ? props.github.map((data, index) =>
+            SimpleChip(data, classes.chip, index)
+          )
+        : ['1', '2', '3'].map((data, index) =>
+            SimpleChip(data, classes.chip, index)
+          )}
       <Chip
         avatar={<Avatar>MB</Avatar>}
         label="Clickable Chip"
@@ -75,4 +89,9 @@ Chips.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Chips);
+function mapStateToProps({ github }) {
+  console.log('mapping states');
+  return { github };
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Chips));
