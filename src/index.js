@@ -2,21 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
-import { fetchGithub } from './actions/index';
+import ReduxPromise from 'redux-promise';
 
-const store = createStore(reducers);
-
-console.log(store.getState());
-
-store.dispatch(fetchGithub());
-
-console.log(store.getState());
+const createStoreWithMiddleWare = applyMiddleware(ReduxPromise)(createStore);
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={createStoreWithMiddleWare(reducers)}>
     <App />
   </Provider>,
   document.getElementById('root')

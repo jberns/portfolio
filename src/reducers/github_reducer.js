@@ -1,11 +1,11 @@
+import _ from 'lodash';
 import { FETCH_GITHUB } from '../actions/index';
 
-export default function githubApp(state = [], action) {
+export default function(state = {}, action) {
   switch (action.type) {
     case FETCH_GITHUB:
-      return Object.assign({}, state, {
-        github_project: action.payload
-      });
+      return _.mapKeys(action.payload.data, 'id');
+
     default:
       return state;
   }
