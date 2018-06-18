@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchGithub } from '../actions/index';
 import _ from 'lodash';
+import Card from './Card';
 
 class Github extends Component {
   componentDidMount() {
@@ -10,17 +11,21 @@ class Github extends Component {
 
   renderGithub() {
     return _.map(this.props.github, hub => {
-      return <li key={hub.id}>{hub.id}</li>;
+      console.log(hub);
+      return (
+        <Card
+          key={hub.id}
+          Title={hub.full_name}
+          Description={hub.description}
+          Url={hub.html_url}
+          Languages={hub.language}
+        />
+      );
     });
   }
 
   render() {
-    console.log('Current Render Props: ', this.props.github);
-    return (
-      <div>
-        <ul className="list-group">{this.renderGithub()}</ul>
-      </div>
-    );
+    return <div>{this.renderGithub()}</div>;
   }
 }
 
